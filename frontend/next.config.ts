@@ -19,16 +19,6 @@ const nextConfig: NextConfig = {
       },
     ]);
   },
-  webpack: (config, { webpack }) => {
-    // Ignore mock module in production builds
-    config.plugins.push(
-      new webpack.IgnorePlugin({
-        resourceRegExp: /^\.\/mock\/fhevmMock$/,
-        contextRegExp: /fhevm\/internal$/,
-      })
-    );
-    return config;
-  },
 };
 
 export default nextConfig;

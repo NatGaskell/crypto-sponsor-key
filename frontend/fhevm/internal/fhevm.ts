@@ -241,19 +241,14 @@ export const createFhevmInstance = async (parameters: {
       //////////////////////////////////////////////////////////////////////////
       // 
       // WARNING!!
-      // ALWAY USE DYNAMIC IMPORT TO AVOID INCLUDING THE ENTIRE FHEVM MOCK LIB 
+      // ALWAYS USE DYNAMIC IMPORT TO AVOID INCLUDING THE ENTIRE FHEVM MOCK LIB 
       // IN THE FINAL PRODUCTION BUNDLE!!
       // 
       //////////////////////////////////////////////////////////////////////////
       
-      // Only load mock in development or when explicitly needed
-      if (process.env.NODE_ENV === 'production') {
-        throw new Error(
-          'Mock FHEVM instance is not available in production. Please use a real FHEVM network (e.g., Sepolia testnet).'
-        );
-      }
-      
-      // Dynamic import with proper error handling
+      // Dynamic import with proper error handling. This is allowed both in
+      // development and production so that deployed frontends can still talk
+      // to a local Hardhat FHEVM node (chainId 31337).
       try {
         const fhevmMock = await import("./mock/fhevmMock");
         const mockInstance = await fhevmMock.fhevmMockCreateInstance({
