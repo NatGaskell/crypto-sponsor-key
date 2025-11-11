@@ -18,7 +18,17 @@ const nextConfig: NextConfig = {
         ],
       },
     ]);
-  }
+  },
+  webpack: (config, { isServer, dev }) => {
+    // In production builds, replace mock module with empty module
+    if (!dev && !isServer) {
+      config.resolve.alias = {
+        ...config.resolve.alias,
+        './mock/fhevmMock': false,
+      };
+    }
+    return config;
+  },
 };
 
 export default nextConfig;

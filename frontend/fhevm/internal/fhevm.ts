@@ -253,11 +253,8 @@ export const createFhevmInstance = async (parameters: {
         );
       }
       
-      // Use webpack magic comment to make this truly optional
-      const fhevmMock = await import(/* webpackIgnore: true */ "./mock/fhevmMock").catch(() => {
-        throw new Error('Mock FHEVM utilities are not available. Please ensure you are running in development mode.');
-      });
-      
+      // Dynamic import with proper error handling
+      const fhevmMock = await import("./mock/fhevmMock");
       const mockInstance = await fhevmMock.fhevmMockCreateInstance({
         rpcUrl,
         chainId,
