@@ -249,11 +249,15 @@ export const createFhevmInstance = async (parameters: {
       // Only load mock in development or when explicitly needed
       if (process.env.NODE_ENV === 'production') {
         throw new Error(
-          'Mock FHEVM instance is not available in production. Please use a real FHEVM network.'
+          'Mock FHEVM instance is not available in production. Please use a real FHEVM network (e.g., Sepolia testnet).'
         );
       }
       
-      const fhevmMock = await import("./mock/fhevmMock");
+      // Use webpack magic comment to make this truly optional
+      const fhevmMock = await import(/* webpackIgnore: true */ "./mock/fhevmMock").catch(() => {
+        throw new Error('Mock FHEVM utilities are not available. Please ensure you are running in development mode.');
+      });
+      
       const mockInstance = await fhevmMock.fhevmMockCreateInstance({
         rpcUrl,
         chainId,
