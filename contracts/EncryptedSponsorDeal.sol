@@ -90,6 +90,7 @@ contract EncryptedSponsorDeal is SepoliaConfig {
         d.budget = FHE.add(d.budget, delta);
 
         FHE.allowThis(d.budget);
+        FHE.allow(d.budget, msg.sender);
         FHE.allow(d.budget, d.creator);
 
         emit DealBudgetUpdated(dealId);
