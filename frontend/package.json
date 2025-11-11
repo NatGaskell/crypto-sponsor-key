@@ -10,9 +10,9 @@
   },
   "scripts": {
     "clean": "rimraf .next",
-    "dev:mock": "npm run ishhrunning && npm run clean && npm run genabi && next dev --turbopack",
-    "dev": "npm run clean && npm run genabi && next dev --turbopack",
-    "dev-webpack": "npm run clean && npm run genabi && next dev",
+    "dev:mock": "npm run ishhrunning && npm run clean && npm run genabi && next dev --hostname 0.0.0.0 --turbopack",
+    "dev": "npm run clean && npm run genabi && next dev --hostname 0.0.0.0 --turbopack",
+    "dev-webpack": "npm run clean && npm run genabi && next dev --hostname 0.0.0.0",
     "genabi": "node ./scripts/genabi.mjs",
     "ishhrunning": "node ./scripts/is-hardhat-node-running.mjs",
     "build": "next build",
