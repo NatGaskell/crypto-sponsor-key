@@ -113,6 +113,7 @@ contract EncryptedSponsorDeal is SepoliaConfig {
         view
         returns (address sponsor, address creator, string memory title, string memory description, bool active)
     {
+        require(dealId > 0 && dealId < _nextDealId, "deal does not exist");
         Deal storage d = _deals[dealId];
         return (d.sponsor, d.creator, d.title, d.description, d.active);
     }
