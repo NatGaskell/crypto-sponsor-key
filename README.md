@@ -1,6 +1,11 @@
 # Crypto Sponsor Key
 
-A decentralized sponsorship deal management platform with encrypted budgets using Fully Homomorphic Encryption (FHE). Built with FHEVM, Hardhat, and Next.js.
+A decentralized sponsorship deal management platform with encrypted budgets using Fully Homomorphic Encryption (FHE). Built with FHEVM, Hardhat, and a modern Next.js (App Router) frontend.
+
+## 🎥 Demo
+
+- **Live demo**: https://crypto-sponsor-key.vercel.app/
+- **Local walkthrough video**: `crypto-sponsor-key/demo.mp4` (recorded from a full flow: connect wallet → create encrypted deal → decrypt budget)
 
 ## ✨ Features
 
@@ -20,10 +25,10 @@ A decentralized sponsorship deal management platform with encrypted budgets usin
 
 ### Frontend
 
-- **Next.js 15**: React framework with App Router
-- **RainbowKit + Wagmi**: Wallet connection and Web3 integration
-- **FHEVM SDK**: Client-side encryption/decryption
-- **shadcn/ui**: Modern UI components with Tailwind CSS
+- **Next.js 15**: React framework with App Router and Turbopack dev server
+- **RainbowKit + Wagmi + viem**: Wallet connection and Web3 integration
+- **FHEVM React hooks**: Client-side encryption/decryption and decryption signature management
+- **Modern UI**: Tailwind-based design with Lucide icons and polished sponsorship cards
 
 ## 🚀 Quick Start
 
@@ -38,13 +43,9 @@ A decentralized sponsorship deal management platform with encrypted budgets usin
 1. **Clone and install dependencies**
 
    ```bash
-   # Install root dependencies
+   # From the project root that contains this README
+   cd refer
    pnpm install
-   
-   # Install frontend dependencies
-   cd frontend
-   pnpm install
-   cd ..
    ```
 
 2. **Set up environment variables**
@@ -60,65 +61,71 @@ A decentralized sponsorship deal management platform with encrypted budgets usin
 3. **Compile contracts**
 
    ```bash
+   # From refer/
    pnpm compile
    ```
 
 4. **Run tests**
 
    ```bash
+   # From refer/
    pnpm test
    ```
 
-### Local Development
+### Local Development (Hardhat + frontend)
 
-1. **Start local FHEVM node**
-
-   ```bash
-   pnpm fhevm:start
-   ```
-
-2. **Deploy contracts** (in a new terminal)
+1. **Start local Hardhat node**
 
    ```bash
-   pnpm deploy:local
+   # From refer/
+   pnpm node
    ```
 
-3. **Generate ABIs for frontend**
+2. **Deploy contracts to the local node** (in a new terminal)
+
+   ```bash
+   # From refer/
+   npx hardhat deploy --network localhost
+   ```
+
+3. **Generate ABIs for the frontend**
 
    ```bash
    cd frontend
    pnpm genabi
    ```
 
-4. **Start frontend** (in a new terminal)
+4. **Start the frontend** (in a new terminal)
 
    ```bash
-   cd frontend
+   cd refer/frontend
    pnpm dev
    ```
 
-5. **Open browser**
+5. **Open the app**
 
-   Navigate to `http://localhost:3000` and connect your MetaMask wallet to localhost network (Chain ID: 31337)
+   Navigate to `http://localhost:3000` and connect your MetaMask wallet to the local Hardhat network (Chain ID: 31337).
 
 ### Deploy to Sepolia
 
 1. **Deploy contracts**
 
    ```bash
-   pnpm deploy:sepolia
+   # From refer/
+   npx hardhat deploy --network sepolia
    ```
 
 2. **Generate ABIs**
 
    ```bash
-   cd frontend
+   cd refer/frontend
    pnpm genabi
    ```
 
-3. **Start frontend**
+3. **Start frontend (local against Sepolia)**
 
    ```bash
+   cd refer/frontend
    pnpm dev
    ```
 
