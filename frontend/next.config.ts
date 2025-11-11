@@ -19,14 +19,14 @@ const nextConfig: NextConfig = {
       },
     ]);
   },
-  webpack: (config, { isServer, dev }) => {
-    // In production builds, replace mock module with empty module
-    if (!dev && !isServer) {
-      config.resolve.alias = {
-        ...config.resolve.alias,
-        './mock/fhevmMock': false,
-      };
-    }
+  webpack: (config, { webpack }) => {
+    // Ignore mock module in production builds
+    config.plugins.push(
+      new webpack.IgnorePlugin({
+        resourceRegExp: /^\.\/mock\/fhevmMock$/,
+        contextRegExp: /fhevm\/internal$/,
+      })
+    );
     return config;
   },
 };

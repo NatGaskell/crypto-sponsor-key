@@ -254,16 +254,22 @@ export const createFhevmInstance = async (parameters: {
       }
       
       // Dynamic import with proper error handling
-      const fhevmMock = await import("./mock/fhevmMock");
-      const mockInstance = await fhevmMock.fhevmMockCreateInstance({
-        rpcUrl,
-        chainId,
-        metadata: fhevmRelayerMetadata,
-      });
+      try {
+        const fhevmMock = await import("./mock/fhevmMock");
+        const mockInstance = await fhevmMock.fhevmMockCreateInstance({
+          rpcUrl,
+          chainId,
+          metadata: fhevmRelayerMetadata,
+        });
 
-      throwIfAborted();
+        throwIfAborted();
 
-      return mockInstance;
+        return mockInstance;
+      } catch (error) {
+        throw new Error(
+          'Mock FHEVM module not available. Please use a real FHEVM network (e.g., Sepolia testnet).'
+        );
+      }
     }
   }
 

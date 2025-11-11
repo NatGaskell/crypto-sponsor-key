@@ -94,7 +94,6 @@ export default function Home() {
 
   const {
     instance: fhevmInstance,
-    status: fhevmStatus,
   } = useFhevm({
     provider,
     chainId,
@@ -181,7 +180,7 @@ export default function Home() {
                 setTimeout(() => reloadDeals(), 1500);
               }}
               isCreating={dealData.isCreating}
-              canCreate={dealData.canCreate}
+              canCreate={dealData.canCreate ?? false}
             />
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
