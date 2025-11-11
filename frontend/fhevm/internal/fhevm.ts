@@ -245,6 +245,14 @@ export const createFhevmInstance = async (parameters: {
       // IN THE FINAL PRODUCTION BUNDLE!!
       // 
       //////////////////////////////////////////////////////////////////////////
+      
+      // Only load mock in development or when explicitly needed
+      if (process.env.NODE_ENV === 'production') {
+        throw new Error(
+          'Mock FHEVM instance is not available in production. Please use a real FHEVM network.'
+        );
+      }
+      
       const fhevmMock = await import("./mock/fhevmMock");
       const mockInstance = await fhevmMock.fhevmMockCreateInstance({
         rpcUrl,
