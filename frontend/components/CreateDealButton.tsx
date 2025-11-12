@@ -54,7 +54,7 @@ export const CreateDealButton = ({
     }
 
     try {
-      onCreateDeal(creator, title, description, budgetNum);
+      await onCreateDeal(creator, title, description, budgetNum);
       toast.success("Deal created successfully!");
       setOpen(false);
       // Reset form
