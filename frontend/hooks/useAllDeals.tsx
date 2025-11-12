@@ -80,51 +80,56 @@ export const useAllDeals = (parameters: {
     setIsLoading(true);
     setError(undefined);
 
-    const contractInstance = new ethers.Contract(
-      contract.address,
-      contract.abi,
-      ethersReadonlyProvider
-    );
+    try {
+      const contractInstance = new ethers.Contract(
+        contract.address,
+        contract.abi,
+        ethersReadonlyProvider
+      );
 
-    // Get total deal count
-    const dealCount = await contractInstance.getDealCount();
-    const count = Number(dealCount);
+      // Get total deal count
+      const dealCount = await contractInstance.getDealCount();
+      const count = Number(dealCount);
 
-    console.log(`[useAllDeals] Total deals: ${count}`);
+      console.log(`[useAllDeals] Total deals: ${count}`);
 
-    if (count === 0) {
+      if (count === 0) {
+        setDeals([]);
+        return;
+      }
+
+      // Load all deals in parallel
+      const dealPromises: Promise<DealMeta>[] = [];
+      for (let i = 1; i <= count; i++) {
+        dealPromises.push(
+          contractInstance.getDealMeta(i).then((meta: any) => ({
+            dealId: i,
+            sponsor: meta[0],
+            creator: meta[1],
+            title: meta[2],
+            description: meta[3],
+            active: meta[4],
+          }))
+        );
+      }
+
+      const allDeals = await Promise.all(dealPromises);
+      
+      // Filter out empty deals (zero address sponsor)
+      const validDeals = allDeals.filter(
+        (deal) => deal.sponsor !== ethers.ZeroAddress
+      );
+
+      console.log(`[useAllDeals] Loaded ${validDeals.length} valid deals`);
+      setDeals(validDeals);
+    } catch (e) {
+      console.error("[useAllDeals] Error loading deals:", e);
+      setError((e as Error).message);
       setDeals([]);
+    } finally {
       isLoadingRef.current = false;
       setIsLoading(false);
-      return;
     }
-
-    // Load all deals in parallel
-    const dealPromises: Promise<DealMeta>[] = [];
-    for (let i = 1; i <= count; i++) {
-      dealPromises.push(
-        contractInstance.getDealMeta(i).then((meta: any) => ({
-          dealId: i,
-          sponsor: meta[0],
-          creator: meta[1],
-          title: meta[2],
-          description: meta[3],
-          active: meta[4],
-        }))
-      );
-    }
-
-    const allDeals = await Promise.all(dealPromises);
-    
-    // Filter out empty deals (zero address sponsor)
-    const validDeals = allDeals.filter(
-      (deal) => deal.sponsor !== ethers.ZeroAddress
-    );
-
-    console.log(`[useAllDeals] Loaded ${validDeals.length} valid deals`);
-    setDeals(validDeals);
-    isLoadingRef.current = false;
-    setIsLoading(false);
   }, [contract.address, contract.abi, ethersReadonlyProvider]);
 
   // Auto-load on mount and when dependencies change
