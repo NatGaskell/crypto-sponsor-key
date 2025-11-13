@@ -52,6 +52,8 @@ contract EncryptedSponsorDeal is SepoliaConfig {
         bytes calldata inputProof
     ) external returns (uint256 dealId) {
         require(creator != address(0), "creator is zero address");
+        require(bytes(title).length > 0, "title cannot be empty");
+        require(bytes(description).length > 0, "description cannot be empty");
 
         euint32 budgetValue = FHE.fromExternal(encryptedBudget, inputProof);
 
