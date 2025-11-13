@@ -26,7 +26,7 @@ interface SponsorshipCardProps {
 }
 
 const SponsorshipCard = ({ deal, onDecrypt }: SponsorshipCardProps) => {
-  const [showDetails, setShowDetails] = useState(true);
+  const [showDetails, setShowDetails] = useState(false);
   const { address, isConnected } = useAccount();
   const normalizedAddress = address?.toLowerCase();
   const isVerified = normalizedAddress && deal.verifiedPartners.map((v) => v.toLowerCase()).includes(normalizedAddress);
