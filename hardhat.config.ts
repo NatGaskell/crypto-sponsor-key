@@ -18,6 +18,15 @@ import "./tasks/FHECounter";
 // Provide a safe fallback for Hardhat <2.22 where `vars` is not available
 const vars = (_vars as any) ?? { get: (_name: string, fallback = "") => fallback };
 
+// Validate required environment variables
+const requiredEnvVars = ['PRIVATE_KEY', 'INFURA_API_KEY'];
+const missingEnvVars = requiredEnvVars.filter(envVar => !process.env[envVar] && !vars.get(envVar));
+
+if (missingEnvVars.length > 0) {
+  console.warn(`Warning: Missing environment variables: ${missingEnvVars.join(', ')}`);
+  console.warn('Some functionality may not work correctly without these variables.');
+}
+
 const MNEMONIC: string = vars.get("MNEMONIC", "test test test test test test test test test test test junk");
 // Prefer explicit environment variables (from .env) and fall back to Hardhat vars
 const INFURA_API_KEY: string =
