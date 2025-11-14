@@ -34,6 +34,7 @@ export const CreateDealButton = ({
   canCreate,
 }: CreateDealButtonProps) => {
   const [open, setOpen] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [creator, setCreator] = useState("");
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
@@ -41,6 +42,10 @@ export const CreateDealButton = ({
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    if (isSubmitting) {
+      return;
+    }
 
     if (!creator || !title || !description || !budget) {
       toast.error("Please fill in all fields");
@@ -53,6 +58,7 @@ export const CreateDealButton = ({
       return;
     }
 
+    setIsSubmitting(true);
     try {
       await onCreateDeal(creator, title, description, budgetNum);
       toast.success("Deal created successfully!");
@@ -64,6 +70,8 @@ export const CreateDealButton = ({
       setBudget("");
     } catch (error) {
       toast.error("Failed to create deal: " + (error as Error).message);
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -131,8 +139,8 @@ export const CreateDealButton = ({
             </div>
           </div>
           <DialogFooter>
-            <Button type="submit" disabled={isCreating || !canCreate}>
-              {isCreating ? "Creating..." : "Create Deal"}
+            <Button type="submit" disabled={isCreating || !canCreate || isSubmitting}>
+              {isSubmitting ? "Creating..." : isCreating ? "Initializing..." : "Create Deal"}
             </Button>
           </DialogFooter>
         </form>
