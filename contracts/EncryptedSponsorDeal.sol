@@ -124,6 +124,7 @@ contract EncryptedSponsorDeal is SepoliaConfig {
     /// @notice Returns the current encrypted budget of a deal.
     /// @dev The returned value is an encrypted handle that can later be decrypted off-chain via FHEVM.
     function getEncryptedBudget(uint256 dealId) external view returns (euint32) {
+        require(dealId > 0 && dealId < _nextDealId, "deal does not exist");
         Deal storage d = _deals[dealId];
         return d.budget;
     }
