@@ -84,9 +84,10 @@ contract EncryptedSponsorDeal is SepoliaConfig {
         externalEuint32 encryptedDelta,
         bytes calldata inputProof
     ) external {
+        require(dealId > 0 && dealId < _nextDealId, "deal does not exist");
         Deal storage d = _deals[dealId];
-        require(d.active, "deal not active");
-        require(d.sponsor == msg.sender, "only sponsor");
+        require(d.active, "deal is not active and cannot be modified");
+        require(d.sponsor == msg.sender, "only the deal sponsor can increase budget");
 
         euint32 delta = FHE.fromExternal(encryptedDelta, inputProof);
         d.budget = FHE.add(d.budget, delta);
