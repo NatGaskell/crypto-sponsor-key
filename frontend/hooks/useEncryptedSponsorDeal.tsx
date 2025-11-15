@@ -154,6 +154,10 @@ export const useEncryptedSponsorDeal = (parameters: {
       thisContract.getEncryptedBudget(dealId),
     ])
       .then(([metaResult, budgetResult]) => {
+        console.log("[useEncryptedSponsorDeal] Contract interaction successful");
+        console.log("[useEncryptedSponsorDeal] Chain ID:", thisChainId);
+        console.log("[useEncryptedSponsorDeal] Contract address:", thisContractAddress);
+        console.log("[useEncryptedSponsorDeal] Deal ID:", dealId);
         console.log("[useEncryptedSponsorDeal] getDealMeta()=", metaResult);
         console.log(
           "[useEncryptedSponsorDeal] getEncryptedBudget()=",
