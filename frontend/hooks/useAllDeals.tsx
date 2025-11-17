@@ -98,8 +98,10 @@ export const useAllDeals = (parameters: {
         return;
       }
 
-      // Load all deals in parallel
+      // Load all deals in parallel with batch processing for performance
       const dealPromises: Promise<DealMeta>[] = [];
+      const batchSize = 10; // Process deals in batches to avoid overwhelming the network
+      
       for (let i = 1; i <= count; i++) {
         dealPromises.push(
           contractInstance.getDealMeta(i).then((meta: any) => ({
@@ -111,6 +113,11 @@ export const useAllDeals = (parameters: {
             active: meta[4],
           }))
         );
+        
+        // Process in batches to prevent rate limiting
+        if (i % batchSize === 0 || i === count) {
+          await new Promise(resolve => setTimeout(resolve, 100));
+        }
       }
 
       const allDeals = await Promise.all(dealPromises);
