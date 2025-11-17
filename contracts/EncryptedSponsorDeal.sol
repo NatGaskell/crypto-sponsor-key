@@ -102,9 +102,10 @@ contract EncryptedSponsorDeal is SepoliaConfig {
     /// @notice Marks a deal as closed. The encrypted budget remains stored but cannot be modified.
     /// @param dealId The id of the target deal
     function closeDeal(uint256 dealId) external {
+        require(dealId > 0 && dealId < _nextDealId, "deal does not exist");
         Deal storage d = _deals[dealId];
-        require(d.active, "deal not active");
-        require(d.sponsor == msg.sender, "only sponsor");
+        require(d.active, "deal is already closed");
+        require(d.sponsor == msg.sender, "only the deal sponsor can close the deal");
 
         d.active = false;
 
