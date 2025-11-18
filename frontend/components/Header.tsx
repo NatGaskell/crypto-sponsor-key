@@ -7,8 +7,8 @@ const Header = () => {
       <div className="container mx-auto px-4 py-4">
         <div className="flex items-center justify-between">
           <Logo />
-          <div className="flex items-center gap-6">
-            <h2 className="text-sm md:text-base font-medium text-foreground hidden sm:block">
+          <div className="flex items-center gap-4 md:gap-6">
+            <h2 className="text-xs md:text-sm lg:text-base font-medium text-foreground hidden md:block">
               Partner Confidently, Protect Agreements.
             </h2>
             <ConnectButton />
