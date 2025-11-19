@@ -54,6 +54,7 @@ contract EncryptedSponsorDeal is SepoliaConfig {
         require(creator != address(0), "creator is zero address");
         require(bytes(title).length > 0, "title cannot be empty");
         require(bytes(description).length > 0, "description cannot be empty");
+        require(creator != msg.sender, "creator cannot be the same as sponsor");
 
         euint32 budgetValue = FHE.fromExternal(encryptedBudget, inputProof);
 
